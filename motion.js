@@ -1,6 +1,8 @@
 'use strict';
 const projects=window.portfolioProjects;
-const featured=['flowing-piano','guanlan','software-hub','chrome-profile-manager','skc-assistant'].map(id=>({...projects.find(p=>p.id===id),...window.portfolioFilms[id]}));
+const featured=['flowing-piano','guanlan','software-hub','chrome-profile-manager','skc-assistant','local-mcp'].map(id=>({...projects.find(p=>p.id===id),...window.portfolioFilms[id]}));
+const collectionIndex=featured.length;
+const routeCodes=['A','B','C','D','E','G','F']; // Keep existing F links on the collection.
 featured.push(window.portfolioCollection);
 const $=selector=>document.querySelector(selector);
 const dialog=$('#detailDialog'),frame=$('#mediaFrame'),cinema=$('#cinema'),reducedQuery=matchMedia('(prefers-reduced-motion: reduce)');
@@ -9,7 +11,7 @@ let video=$('#sceneVideo'),current=-1,paused=reducedQuery.matches,autoplay=false
 let active=null,rollback=null,indicatorMotion=null;
 const motions=new Set(),clock=n=>'00:'+String(Math.floor(Number.isFinite(n)?n:0)).padStart(2,'0');
 const suspended=()=>document.hidden||!visible||dialog.open;
-const tabs=featured.slice(0,5).map((film,index)=>{
+const tabs=featured.slice(0,collectionIndex).map((film,index)=>{
   const b=document.createElement('button');b.className='project-tab';b.dataset.project=index;
   const n=document.createElement('span');n.className='project-number';n.textContent=String(index+1).padStart(2,'0');
   const copy=document.createElement('div'),label=document.createElement('span'),title=document.createElement('strong'),arrow=document.createElement('span');
@@ -25,7 +27,7 @@ function animate(el,frames,options){if(reducedQuery.matches)return;const a=el.an
 function stopMotion(){for(const a of motions)a.cancel();motions.clear()}
 function moveIndicator(instant=false){
   if(current<0)return;
-  indicator.hidden=current===5;if(current===5){indicatorMotion?.cancel();return}
+  indicator.hidden=current===collectionIndex;if(current===collectionIndex){indicatorMotion?.cancel();return}
   const from=indicator.getBoundingClientRect(),to=tabs[current].getBoundingClientRect(),nav=$('#projectNav').getBoundingClientRect();indicatorMotion?.cancel();
   Object.assign(indicator.style,{left:(to.left-nav.left)+'px',top:(to.bottom-nav.top-2)+'px',width:to.width+'px'});
   if(!instant&&!reducedQuery.matches&&from.width)indicatorMotion=indicator.animate([
@@ -80,8 +82,8 @@ function updateFilm(route='push',instant=false){
   $('#stageLabel').textContent=film.name+' / 功能影片';$('#stageMode').textContent=film.version+' / '+(film.format||'1080P');$('#featureSummary').textContent=film.summary;$('#filmDownload').href=film.src;
   $('#timeline').max=filmDuration();$('#duration').textContent=clock(filmDuration());
   tabs.forEach((b,i)=>{b.classList.toggle('selected',i===current);b.setAttribute('aria-pressed',String(i===current))});moveIndicator(instant);
-  $('#showOverview').setAttribute('aria-pressed',String(current===5));$('#projectDetail').innerHTML=current===5?'探索全部作品 <span>↗</span>':'了解项目 <span>↗</span>';
-  if(route!=='none'){const url=new URL(location.href);url.searchParams.set('variant','ABCDEF'[current]);try{history[route==='replace'?'replaceState':'pushState']({},'',url)}catch{}}
+  $('#showOverview').setAttribute('aria-pressed',String(current===collectionIndex));$('#projectDetail').innerHTML=current===collectionIndex?'探索全部作品 <span>↗</span>':'了解项目 <span>↗</span>';
+  if(route!=='none'){const url=new URL(location.href);url.searchParams.set('variant',routeCodes[current]);try{history[route==='replace'?'replaceState':'pushState']({},'',url)}catch{}}
   draw();status();
 }
 function reveal(s){
@@ -139,8 +141,8 @@ function openDetail(index){
   const project=projects[index];$('#detailKicker').textContent=project.label;$('#detailTitle').textContent=project.name;$('#detailBody').textContent=project.detail;
   $('#detailPoints').replaceChildren(...project.tags.map(tag=>{const el=document.createElement('span');el.textContent=tag;return el}));if(!dialog.open)dialog.showModal();syncPlayback();
 }
-$('#projectDetail').addEventListener('click',()=>{if(current===5){$('#archive').scrollIntoView({behavior:reducedQuery.matches?'instant':'smooth'});return}openDetail(projects.findIndex(p=>p.id===featured[current].id))});
-$('#showOverview').addEventListener('click',()=>{selectScene(5);paused=false;syncPlayback();cinema.scrollIntoView({behavior:reducedQuery.matches?'instant':'smooth',block:'center'})});
+$('#projectDetail').addEventListener('click',()=>{if(current===collectionIndex){$('#archive').scrollIntoView({behavior:reducedQuery.matches?'instant':'smooth'});return}openDetail(projects.findIndex(p=>p.id===featured[current].id))});
+$('#showOverview').addEventListener('click',()=>{selectScene(collectionIndex);paused=false;syncPlayback();cinema.scrollIntoView({behavior:reducedQuery.matches?'instant':'smooth',block:'center'})});
 $('#about').addEventListener('click',()=>{
   $('#detailKicker').textContent='QINGYV / PROJECTS IN MOTION';$('#detailTitle').textContent='把想法，做成作品。';
   $('#detailBody').textContent='从音乐创作、策略研究，到日常工作工具。这里用影片展示每个项目的主要功能，也记录它们继续生长的过程。';$('#detailPoints').replaceChildren();if(!dialog.open)dialog.showModal();syncPlayback();
@@ -151,5 +153,5 @@ document.addEventListener('visibilitychange',syncPlayback);
 const visibilityObserver=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;syncPlayback()},{threshold:.05});visibilityObserver.observe(cinema);
 reducedQuery.addEventListener('change',()=>{stopMotion();moveIndicator(true);if(reducedQuery.matches){paused=true;autoplay=false;$('#autoNext span').textContent='关';$('#autoNext').setAttribute('aria-pressed','false')}syncPlayback()});
 window.addEventListener('resize',()=>moveIndicator(true));window.addEventListener('pagehide',()=>stopPlayback(active));window.addEventListener('pageshow',syncPlayback);
-const routeIndex=()=>{const v=new URL(location.href).searchParams.get('variant');return /^[ABCDEF]$/.test(v)?'ABCDEF'.indexOf(v):5};
+const routeIndex=()=>{const v=new URL(location.href).searchParams.get('variant');return routeCodes.includes(v)?routeCodes.indexOf(v):collectionIndex};
 window.addEventListener('popstate',()=>selectScene(routeIndex(),{route:'none'}));selectScene(routeIndex(),{route:'replace'});

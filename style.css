@@ -38,3 +38,7 @@ body[data-scene="5"]{--accent:#b5a8ff}
 [data-media-state="error"] .load-mark,[data-media-state="cancelled"] .load-mark,[data-media-state="blocked"] .load-mark{border-radius:2px;border-color:#d8b294}
 .transport input:disabled{cursor:wait;opacity:.4}.transport button:disabled{cursor:default;opacity:.45}@keyframes media-loading{to{transform:rotate(360deg)}}
 @media(max-width:650px){.stage-top .stage-meta{display:flex;gap:8px}.stage-meta #stageMode{display:none}.stage-meta #playbackState{display:inline}.cinema #mediaStatus{left:10px;right:10px;bottom:10px;padding:12px;gap:9px;display:grid;grid-template-columns:16px minmax(0,1fr)}.feedback-copy strong{font-size:12px}.feedback-copy p{font-size:10px}.feedback-actions{grid-column:1/-1;margin-left:0;width:100%}.feedback-actions button{padding:8px 10px;flex:1}.load-mark{width:16px;height:16px}}
+
+/* Six current films; keep every cover equal in the grid. */
+.project-tab:nth-child(-n+2){grid-column:span 2}
+@media(max-width:1050px){.project-tab,.project-tab:nth-child(-n+2),.project-tab:nth-child(5){grid-column:auto}}

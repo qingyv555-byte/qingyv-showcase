@@ -5,7 +5,7 @@ window.portfolioProjects = [
   {id:'software-hub',name:'Software Hub',category:'效率工具',label:'TOOLS & CONNECTIONS',description:'把分散的项目，连接成一个创作空间。',detail:'从项目登记、状态查看到流程图，让不同形态的项目拥有共同的入口，让创作过程更容易被看见和管理。',tags:['项目管理','工作区','流程图'],scene:2},
   {id:'skc-assistant',name:'SKC 商业文件助手',category:'自动化',label:'FILES & WORKFLOWS',description:'从一个商品编号，找到对应素材并完成回复。',detail:'连接本地素材库与企业微信工作流，支持素材索引、编号查询和附件准备。',tags:['素材管理','企业微信','文件检索']},
   {id:'chrome-profile-manager',name:'Chrome Profile Manager',category:'效率工具',label:'BROWSER & ORGANIZATION',description:'为多个浏览器 Profile 建立清晰的组织方式。',detail:'发现已登录的 Chrome Profile，按分类整理，维护管理员与直属账号层级，并按队列打开各自独立的浏览器环境。',tags:['独立 Profile','分类与层级','批量队列'],scene:3},
-  {id:'local-mcp',name:'Local MCP 工作台',category:'自动化',label:'AGENTS & CONNECTIONS',description:'让 AI 与本地工作环境建立连接。',detail:'通过本地工作台管理 MCP 服务、连接状态与访问范围，探索 AI 工具和本地项目的协作方式。',tags:['MCP','AI 工具','本地服务']},
+  {id:'local-mcp',name:'Agent 协作中枢',category:'自动化',label:'AGENT COLLABORATION HUB',description:'网页首脑派工，Codex 执行，让成果带着证据回来。',detail:'从 Local MCP 工作台进化为 Agent Collaboration Hub：在授权项目内规划任务、派给 Codex 执行、读取成果与执行回执，再根据反馈继续修改。支持联系已有桌面聊天，保留文件与命令工具。电脑、服务和网络在线时使用。',tags:['网页首脑','Codex 协作','任务与回执']},
 ];
 
 // Current film versions shared by the exhibition and demos/review.html.
@@ -83,14 +83,21 @@ window.portfolioFilms['skc-assistant']={
 };
 window.portfolioCollection = {
   id:'collection',name:'Ideas in motion',label:'SIX PROJECTS / ONE COLLECTION',
-  src:'demos/collection/v04/Qingyv-Collection-V04-1080p.mp4',
-  poster:'demos/collection/v04/poster.jpg',version:'COLLECTION V04',duration:32,
-  tagline:'6 件工具，让事情更好做。',summary:'编辑音乐、研究策略、管理项目、查找素材、组织浏览器环境、管理 AI 工具连接。',
+  src:'demos/collection/v05/Qingyv-Collection-V05-1080p.mp4',
+  poster:'demos/collection/v05/poster.jpg',version:'COLLECTION V05',duration:32,
+  tagline:'6 件工具，让事情更好做。',summary:'编辑音乐、研究策略、管理项目、查找素材、组织浏览器环境、组织 AI 协作。',
   chapters:[[0,'让想法，动起来。','六件工具，六种具体用途。'],[1.6,'Flowing Piano','音符编辑 → AI 要求 → 编配变化示意。'],
     [6.4,'观澜 · ETF Quant','研究策略，核对数据与证据。'],[11.2,'Software Hub','放入项目 → 展开与组织模块结构。'],
     [16,'SKC 商业文件助手','商品编号 → 匹配素材与附件。'],[20.8,'Chrome Profile Manager','分类 → 搜索 → 启动对应环境。'],
-    [25.6,'Local MCP 工作台','管理服务、连接与访问范围。'],[30.4,'把想法，变成可用的工具。','继续探索下方独立影片。']]
+    [25.6,'Agent 协作中枢','网页首脑派工 → Codex 执行 → 成果回执与后续反馈。'],[30.4,'把想法，变成可用的工具。','继续探索下方独立影片。']]
 };
 for(const id of ['flowing-piano','guanlan','software-hub','chrome-profile-manager','skc-assistant']){
   window.portfolioFilms[id].cover='demos/collection/v02/'+id+'-cover.jpg';
 }
+
+window.portfolioFilms['local-mcp']={
+ src:'demos/agent-hub/v01/Agent-Hub-V01-1080p.mp4',poster:'demos/agent-hub/v01/poster.jpg',cover:'demos/agent-hub/v01/cover.jpg',
+ contact:'demos/agent-hub/v01/contact.jpg',validation:'demos/agent-hub/v01/validation.json',version:'V01',duration:24,
+ tagline:'从派工，到带证据的交付。',summary:'网页首脑拆分需求 → Codex 按依赖执行 → 带回文件与回执 → 继续修改；基于当前能力的功能演绎。',
+ chapters:[[0,'一句话，一支 AI 团队。','Agent 协作中枢，把需求连接到本机执行。'],[3.2,'把需求，拆成可执行的任务。','在已授权的项目内规划工作。'],[7.2,'派给 Codex，让工作接着走。','按任务依赖执行，查看当前状态。'],[12,'带回成果，也带回依据。','读取交付文件、任务状态与执行证据。'],[16.8,'一句反馈，继续同一个目标。','关联后续修改，再读取新的成果回执。'],[21.6,'Agent 协作中枢','从派工，到带证据的交付。']]
+};
